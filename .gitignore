@@ -1,3 +1,9 @@
+.gitignore
+data
+runs
+venv
+yolo*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
