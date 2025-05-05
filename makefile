@@ -25,8 +25,11 @@ build0:
 	# curl -L "https://app.roboflow.com/ds/h8uohoV1Fo?key=y4yt1YrRNl" > v3/roboflow.zip;
 	# unzip v3/roboflow.zip -d v3/;
 build:
-	python3 -m venv venv
+	python3 -m venv venv310
 	venv/bin/pip3 install -r requirements.txt
-	venv/bin/pip3 install -U ultralytics
+	# venv/bin/pip3 install -U ultralytics
+	# venv/bin/pip3 uninstall ultralytics
+	# venv/bin/install ultralytics=3.8.66
+
 predict:
 	venv/bin/python3 predict.py
