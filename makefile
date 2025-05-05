@@ -13,13 +13,13 @@ build0:
 	# sudo apt-get install python3.10
 	# sudo apt install python3-pip
 	# sudo apt-get install unzip
-	mkdir data/v4;
-	curl -L "https://app.roboflow.com/ds/vZpxy3h6AT?key=xqnkFTwCdy" > data/v4/roboflow.zip; 
-	unzip data/v4/roboflow.zip -d data/v4/; 
-	rm data/v4/roboflow.zip
-	cp -r data/v3/train/* data/v4/train
-	cp -r data/v3/valid/* data/v4/valid
-	cp -r data/v3/test/* data/v4/test
+	mkdir data/v1;
+	curl -L "https://app.roboflow.com/ds/vZpxy3h6AT?key=xqnkFTwCdy" > data/v1/roboflow.zip; 
+	unzip data/v1/roboflow.zip -d data/v1/; 
+	rm data/v1/roboflow.zip
+	# cp -r data/v3/train/* data/v4/train
+	# cp -r data/v3/valid/* data/v4/valid
+	# cp -r data/v3/test/* data/v4/test
 	# curl -L "https://app.roboflow.com/ds/h8uohoV1Fo?key=y4yt1YrRNl" > v3/roboflow.zip;
 	# unzip v3/roboflow.zip -d v3/;
 build:
