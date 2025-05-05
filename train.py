@@ -9,7 +9,7 @@ save_dir = 'runs'
 os.makedirs(save_dir, exist_ok=True)    
 
 # Test final learning rates with Stochastic Gradient Descent
-results = model1.train(name='train' , data='data/v1/data.yaml', epochs=80, imgsz=640, device=[0,1,2,3], project=save_dir, optimizer='SGD')
+results = model1.train(name='train' , data='data/v1/data.yaml', epochs=80, imgsz=640, device=[0,1,2,3,4,5,6,7], project=save_dir, optimizer='SGD')
 
 #results = model1.train(name='AdamW_lrf1',data='v1/data.yaml', epochs=100, imgsz=640, device=[0], project=save_dir, optimizer='AdamW')
 
