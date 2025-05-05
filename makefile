@@ -7,6 +7,8 @@ run:
 	venv/bin/python3 learn.py
 
 train:
+	PYTHONNOUSERSITE=1 venv/bin/python3 train.py
+train_v6:
 	venv/bin/python3 train.py
 
 build0:
@@ -17,7 +19,7 @@ build0:
 	curl -L "https://app.roboflow.com/ds/vZpxy3h6AT?key=xqnkFTwCdy" > data/v1/roboflow.zip; 
 	unzip data/v1/roboflow.zip -d data/v1/; 
 	rm data/v1/roboflow.zip
-	# cp -r data/v3/train/* data/v4/train
+	# cp -r data/v3/tr0ain/* data/v4/train
 	# cp -r data/v3/valid/* data/v4/valid
 	# cp -r data/v3/test/* data/v4/test
 	# curl -L "https://app.roboflow.com/ds/h8uohoV1Fo?key=y4yt1YrRNl" > v3/roboflow.zip;
