@@ -1,24 +1,65 @@
 from ultralytics import YOLO
+from datetime import datetime
+import logging
+import time
 import os
 
 
-# model1 = YOLO('yolo11n.pt')  #Object Detection model
-model1 = YOLO('yolo11n-seg.pt')
+# Configure logging
+log_file = 'training_log.txt'
+logging.basicConfig(filename=log_file, level=logging.INFO, 
+                    format='%(asctime)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
+# Log start time
+start_time = time.time()
+start_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+logging.info(f"Training started at: {start_datetime}")
+
+# Initialize model
+pretrained_model = 'yolo11n-seg.pt'
+model1 = YOLO(pretrained_model)
+logging.info(f"Model initialized with pretrained weights: {pretrained_model}")
+
+# Set up save directory
 save_dir = 'runs'
 os.makedirs(save_dir, exist_ok=True)    
+logging.info(f"Base results directory: {os.path.abspath(save_dir)}")
 
-# Test final learning rates with Stochastic Gradient Descent
-results = model1.train(name='train' , data='data/v1/data.yaml', epochs=80, imgsz=640, device=[0,1,2,3], project=save_dir, optimizer='SGD')
+# Log data configuration
+data_config = 'data/v1/data.yaml'
+logging.info(f"Using data config: {data_config}")
 
-#results = model1.train(name='AdamW_lrf1',data='v1/data.yaml', epochs=100, imgsz=640, device=[0], project=save_dir, optimizer='AdamW')
+# Start training
+try:
+    results = model1.train(
+        name='train',  # Ultralytics will auto-increment (train, train2, train3, etc.)
+        data=data_config,
+        epochs=80,
+        imgsz=640,
+        batch=-1,         # <--- find biggest batch automatically!
+        device=[0,1],
+        project=save_dir
+    )
+    
+    # Get the exact training run folder (e.g., runs/train8)
+    # Ultralytics saves the last run path in results.save_dir
+    training_run_dir = results.save_dir if hasattr(results, 'save_dir') else "Unknown"
+    logging.info(f"Exact training folder: {training_run_dir}")
+    
+    # Log completion
+    end_time = time.time()
+    end_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    training_duration = (end_time - start_time) / 3600  # in hours
+    
+    logging.info(f"Training completed at: {end_datetime}")
+    logging.info(f"Total training time: {training_duration:.2f} hours")
+    logging.info(f"Full results path: {training_run_dir}")
+    
+    print(f"Training completed. Results saved in: {training_run_dir}")
+    print(f"Log file saved as: {log_file}")
 
-#results = model4.train(name='AdamW_lrf1'   , data='v5/data.yaml', epochs=300, imgsz=640, device=[0], optimizer='AdamW', lr0=0.03, lrf=1)
-#results = model5.train(name='AdamW_lrf0.5' , data='v5/data.yaml', epochs=300, imgsz=640, device=[0], optimizer='AdamW', lr0=0.03, lrf=0.5)
-#results = model6.train(name='AdamW_lrf0.03', data='v5/data.yaml', epochs=300, imgsz=640, device=[0], optimizer='AdamW', lr0=0.03, lrf=0.04)
-
-# # Baseline models for comparison
-# results = model7.train(name='SGD_lri0.01'  , data='v5/data.yaml', epochs=900, imgsz=640, device=[0], optimizer='SGD'  , lr0=0.01, lrf=1, patience = 100)
-# results = model8.train(name='AdamW_lri0.01', data='v5/data.yaml', epochs=900, imgsz=640, device=[0], optimizer='AdamW', lr0=0.01, lrf=1, patience = 100)
-
+except Exception as e:
+    logging.error(f"Training failed with error: {str(e)}")
+    print(f"Training failed. Error logged in {log_file}")
+    raise
 print("Training Complete")
